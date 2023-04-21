@@ -17,3 +17,6 @@ model.compile(optimizer='adam',
 
 model.fit(x_train, y_train, epochs=5)
 model.evaluate(x_test, y_test)
+
+KERAS_MODEL_NAME = "tf_model_fashion_mnist.h5"
+model.save(KERAS_MODEL_NAME)
