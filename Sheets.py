@@ -1,18 +1,21 @@
 from __future__ import print_function
 
-import os.path
-
+import os
+from dotenv import load_dotenv
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+load_dotenv()
+
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
+
 # The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = '1aEShIgP8TYox_AGwTNhkIMIfIVcAHm9-bVxbustE7Z4'
+SAMPLE_SPREADSHEET_ID = os.environ.get("SAMPLE_SPREADSHEET_ID")
 SAMPLE_RANGE_NAME = 'Class Data!A2:E'
 
 

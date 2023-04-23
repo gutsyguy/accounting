@@ -1,22 +1,25 @@
-import cv2
-vid = cv2.VideoCapture(0)
+from cv2 import VideoCapture,imshow,imwrite, waitKey,destroyWindow
 
-while (True):
-    # Capture the video frame
-    # by frame
-    ret, frame = vid.read()
+cam = VideoCapture(0)
 
-    # Display the resulting frame
-    cv2.imshow('frame', frame)
-    print(frame)
+  
 
-    # the 'q' button is set as the
-    # quitting button you may use any
-    # desired button of your choice
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+result, image = cam.read()
 
-# After the loop release the cap object
-vid.release()
-# Destroy all the windows
-cv2.destroyAllWindows()
+image_id = 0
+  
+if result:
+  
+    imshow("TrainingImage{}".format(image_id), image)
+  
+    #saves image in local repository
+    imwrite("TrainingImage{}.jpg".format(image_id), image)
+  
+
+    waitKey(0)
+    destroyWindow("TrainingImage{}".format(image_id))
+    image_id += 1
+  
+# If captured image is corrupted, moving to else part
+else:
+    print("No image detected. Please! try again")
