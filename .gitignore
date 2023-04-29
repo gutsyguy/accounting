@@ -162,3 +162,5 @@ cython_debug/
 # Specific files
 credentials.json
 token.json
+
+database.ini
