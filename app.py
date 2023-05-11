@@ -1,30 +1,53 @@
+from postgres_rest_api import Postgres as db
 from flask import Flask, render_template
 # import sys
 # sys.path.append('data/Postgres/config.py')
 # from config import Postgres as db
-from postgres_rest_api import Postgres as db
+import sys
+sys.path.insert(0, 'data/Postgres/postgres_rest_api.py')
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/delete')
+
+@app.route('/update')
+def update():
+    db.Update_Data('5/7/2023', 400, 200, 200)
+    return render_template('index.html')
+
+
+@app.route('/add')
+def add():
+    date = '5/10/2023'
+    cash = 1000
+    credit = 1000000
+    other = 1
+    db.Add_Data(date, cash, credit, other)
+    return render_template('index.html')
+
+
+@app.route('/delete', methods=["DELETE"])
 def delete():
     db.Delete_Data('5/5/2023')
     print('success')
     return render_template('index.html')
 
-@app.route('/getAll')
+
+@app.route('/getAll', methods=["GET"])
 def get_All():
     db.Get_All_Data()
     return render_template('index.html')
 
-@app.route('/getOne')
+
+@app.route('/getOne', methods=["GET"])
 def get_One():
     db.Get_Data('5/6/2023')
     return render_template('index.html')
 
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=4000) 
+    app.run(debug=True, host='0.0.0.0', port=4001)

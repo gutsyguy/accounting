@@ -2,6 +2,7 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 
+
 class Postgres:
 
     load_dotenv()
@@ -23,7 +24,8 @@ class Postgres:
                 cash  float,
                 credit  float,
                 other  float,
-                total float
+                total float,
+                CONSTRAINT unique_date UNIQUE (date)
             )
         '''
 
@@ -50,12 +52,17 @@ class Postgres:
         except Exception as error:
             print(error)
 
-    def Update_Data(updated_date, update_cash, update_credit, update_other, update_total):
+    def Update_Data(updated_date, update_cash, update_credit, update_other):
+        update_total = update_cash + update_credit + update_other
         try:
             update_script = """
-                UPDATE data SET cash = %s, credit = %s, other = %s, total = %s WHERE date = %s;
+                UPDATE data SET cash = %s, credit = %s, other = %s, total = %s
+                WHERE date = %s;
             """
-            Postgres.cur.execute(update_script, (update_cash, update_credit, update_other, update_total, updated_date))
+            Postgres.cur.execute(
+                update_script,
+                (update_cash, update_credit, update_other,
+                 update_total, updated_date))
             Postgres.conn.commit()
 
             print("update success")
@@ -84,18 +91,14 @@ class Postgres:
                 print('credit:', row[2])
                 print('other:', row[3])
                 print('total:', row[4])
-                print("_________________________________________________________")
+                print("______________________________________________________")
             else:
                 print(f"No data found for date {date}")
-
-            
 
             return row
 
         except Exception as error:
             print(error)
-
-
 
     def Get_All_Data():
         try:
@@ -111,8 +114,7 @@ class Postgres:
                 print('credit:', row[2])
                 print('other:', row[3])
                 print('total:', row[4])
-                print("_________________________________________________________")
-
+                print("______________________________________________________")
 
             print(rows)
             return rows

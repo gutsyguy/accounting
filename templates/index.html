@@ -1,24 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/dist/output.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body>
     <div>
-        <div class="mb-3">
-            <a href="/delete">
-                <button>delete</button>
-            </a>
-            <a href="/getAll">
-                <button>getAll</button>
-            </a>
-            <a href="/getOne">
-                <button>getOne</button>
-            </a>
+      <div class="flex justify-center">
+        <div class="mt-10 text-center">
+          <h1 class="text-5xl">Accounting App</h1>
+          <h2 class="my-40">ML Camera Here</h2>
         </div>
+      </div>
+      <div class="flex justify-center">
+        <a
+          href="/add"
+          class="mx-8 py-3 px-7 border-2 border-black border-solid rounded-xl"
+        >
+          <button>add</button>
+        </a>
+        <a
+          href="/delete"
+          class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
+        >
+          <button>delete</button>
+        </a>
+        <a
+          href="/getAll"
+          class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
+        >
+          <button>getAll</button>
+        </a>
+        <a
+          href="/getOne"
+          class="mx-8 py-3 px-4 border-2 border-black border-solid rounded-xl"
+        >
+          <button>getOne</button>
+        </a>
+        <a
+          href="/update"
+          class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
+        >
+          <button>update</button>
+        </a>
+      </div>
     </div>
-</body>
+  </body>
 </html>
