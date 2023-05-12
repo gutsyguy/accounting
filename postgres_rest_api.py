@@ -16,6 +16,8 @@ class Postgres:
             password=os.environ.get('password'),
             port=os.environ.get('port_id')
         )
+
+        # conn = psycopg2.connect('/data/Postgres/database.sql')
         cur = conn.cursor()
 
         create_script = '''
