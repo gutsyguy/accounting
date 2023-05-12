@@ -1,8 +1,5 @@
 from postgres_rest_api import Postgres as db
-from flask import Flask, render_template
-import sys
-sys.path.insert(0, 'data/Postgres/postgres_rest_api.py')
-
+from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 
@@ -14,17 +11,18 @@ def index():
 @app.route('/update')
 def update():
     db.Update_Data('5/7/2023', 400, 200, 200)
-    return 
-
-
-@app.route('/add', methods=["PUT"])
-def add():
-    date = '5/10/2023'
-    cash = 1000
-    credit = 1000000
-    other = 1
-    db.Add_Data(date, cash, credit, other)
     return render_template('index.html')
+
+
+@app.route('/add', methods=['POST'])
+def add():
+    date = request.form['date']
+    cash = request.form['cash']
+    credit = request.form['credit']
+    other = request.form['other']
+    db.Add_Data(date, int(cash), int(credit), int(other))
+    return redirect(url_for('index'))
+
 
 
 @app.route('/delete')

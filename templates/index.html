@@ -19,35 +19,94 @@
       <div class="flex justify-center">
         <a
           href="/add"
+          onclick="renderer('add')"
           class="mx-8 py-3 px-7 border-2 border-black border-solid rounded-xl"
         >
-          <button>add</button>
+          <button type="button">add</button>
         </a>
         <a
-          href="/delete"
+          href="delete"
+          onclick="renderer('delete')"
           class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
         >
-          <button>delete</button>
+          <button type="button">delete</button>
         </a>
         <a
-          href="/getAll"
+          href="getAll"
+          onclick="renderer('getAll')"
           class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
         >
-          <button>getAll</button>
+          <button type="button">getAll</button>
         </a>
         <a
-          href="/getOne"
+          href="getOne"
+          onclick="renderer('getOne')"
           class="mx-8 py-3 px-4 border-2 border-black border-solid rounded-xl"
         >
-          <button>getOne</button>
+          <button type="button">getOne</button>
         </a>
         <a
-          href="/update"
+          href="update"
+          onclick="renderer('update')"
           class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
         >
-          <button>update</button>
+          <button type="button">update</button>
         </a>
       </div>
+      <div class="flex justify-center mt-10">
+        <form action="{{ url_for('add') }}" method="POST">
+          <input
+            class="border-2 border-solid border-black rounded-xl mx-4"
+            type="text"
+            name="date"
+            value=""
+            placeholder="Date"
+          />
+          <input
+            class="border-2 border-solid border-black rounded-xl mx-4"
+            type="number"
+            name="cash"
+            value=""
+            placeholder="Cash"
+          />
+          <input
+            class="border-2 border-solid border-black rounded-xl mx-4"
+            type="number"
+            name="credit"
+            value=""
+            placeholder="Credit"
+          />
+          <input
+            class="border-2 border-solid border-black rounded-xl mx-4"
+            type="number"
+            name="other"
+            value=""
+            placeholder="Other"
+          />
+          <a href="/add">
+            <button type="submit">Add Data</button>
+          </a>
+        </form>
+      </div>
     </div>
+
+    <script>
+      const renderer = (state) => {
+        switch (state) {
+          case state == "add":
+            console.log("add");
+            break;
+          case state == "delete":
+            console.log("delete");
+            break;
+          case state == "getAll":
+            console.log("get all");
+          case state == "getOne":
+            console.log("getOne");
+          case state == "update":
+            console.log("update");
+        }
+      };
+    </script>
   </body>
 </html>
