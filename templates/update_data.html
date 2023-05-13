@@ -1,0 +1,87 @@
+<link rel="stylesheet" href="/dist/output.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+
+<body>
+  <div>
+    <div class="flex justify-center">
+      <div class="mt-10 text-center">
+        <h1 class="text-5xl">Accounting App</h1>
+        <h2 class="my-40">ML Camera Here</h2>
+      </div>
+    </div>
+    <div class="flex justify-center">
+      <a href="/add">
+        <button
+          type="button"
+          class="mx-8 py-3 px-7 border-2 border-black border-solid rounded-xl"
+        >
+          add
+        </button>
+      </a>
+      <a
+        href="/delete"
+        onclick="renderer('delete')"
+        class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
+      >
+        <button type="button">delete</button>
+      </a>
+      <a
+        href="/getAll"
+        onclick="renderer('getAll')"
+        class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
+      >
+        <button type="button">getAll</button>
+      </a>
+      <a
+        href="/getOne"
+        onclick="renderer('getOne')"
+        class="mx-8 py-3 px-4 border-2 border-black border-solid rounded-xl"
+      >
+        <button type="button">getOne</button>
+      </a>
+      <a
+        href="/update"
+        onclick="renderer('update')"
+        class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
+      >
+        <button type="button">update</button>
+      </a>
+    </div>
+
+    <div class="flex justify-center mt-10">
+      <form action="{{ url_for('add') }}">
+        <input
+          class="border-2 border-solid border-black rounded-xl mx-4"
+          type="text"
+          name="date"
+          value=""
+          placeholder="Date"
+        />
+        <input
+          class="border-2 border-solid border-black rounded-xl mx-4"
+          type="number"
+          name="cash"
+          value=""
+          placeholder="Cash"
+        />
+        <input
+          class="border-2 border-solid border-black rounded-xl mx-4"
+          type="number"
+          name="credit"
+          value=""
+          placeholder="Credit"
+        />
+        <input
+          class="border-2 border-solid border-black rounded-xl mx-4"
+          type="number"
+          name="other"
+          value=""
+          placeholder="Other"
+        />
+        <a href="/submit_add">
+          <button type="submit">Get Data</button>
+        </a>
+      </form>
+    </div>
+  </div>
+</body>
