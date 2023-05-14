@@ -1,9 +1,15 @@
 from postgres_rest_api import Postgres as db
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
+from flask_uploads import UploadSet, IMAGES
+
 import sys
 sys.path.insert(0, 'data/Postgres/postgres_rest_api.py')
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = 'asldfkjlj'
+app.config['UPLOADED_PHOTO_DEST'] = 'uploads'
+
+photos = UploadSet('photos', IMAGES)
 
 
 @app.route('/')
@@ -14,7 +20,7 @@ def index():
 @app.route('/update')
 def update():
     db.Update_Data('5/7/2023', 400, 200, 200)
-    return 
+    return
 
 
 @app.route('/add', methods=["PUT"])

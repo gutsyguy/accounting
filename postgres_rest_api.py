@@ -40,19 +40,21 @@ class Postgres:
 
     def Add_Data(date, cash, credit, other):
 
-        total = cash + credit + other
-        try:
-            add_script = '''
-                INSERT INTO data (date, cash, credit, other, total)
-                 VALUES (%s, %s, %s, %s, %s);
-            '''
-            Postgres.cur.execute(
-                add_script, (date, cash, credit, other, total))
-            Postgres.conn.commit()
-            print("add success")
-
-        except Exception as error:
-            print(error)
+        if cash is not None and credit is not None and other is not None:
+            total = float(cash) + float(credit) + float(other)
+            try:
+                add_script = '''
+                    INSERT INTO data (date, cash, credit, other, total)
+                     VALUES (%s, %s, %s, %s, %s);
+                '''
+                Postgres.cur.execute(
+                    add_script, (date, float(cash), float(credit), float(other), total))
+                Postgres.conn.commit()
+                print("add success")
+            except Exception as error:
+                print(error)
+        else:
+            print("One or more arguments is None")
 
     def Update_Data(updated_date, update_cash, update_credit, update_other):
         update_total = update_cash + update_credit + update_other

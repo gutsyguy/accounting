@@ -6,7 +6,20 @@
     <div class="flex justify-center">
       <div class="mt-10 text-center">
         <h1 class="text-5xl">Accounting App</h1>
-        <h2 class="my-40">ML Camera Here</h2>
+        <div class="flex justify-center my-24">
+          <div class="w-56">
+            {{form.photo(class="form-control")}}
+          </div>
+          <div class="ml-4">
+            {{form.submit(class="bg-green-500 text-white py-2 px-4 rounded")}}
+          </div>
+        </div>
+        </form>
+        {% if file_url %}
+        <div class="mt-5">
+          <img src="{{ file_url }}" style="width: 400px" />
+        </div>
+        {% endif %}
       </div>
     </div>
     <div class="flex justify-center">
@@ -57,29 +70,9 @@
           value=""
           placeholder="Date"
         />
-        <input
-          class="border-2 border-solid border-black rounded-xl mx-4"
-          type="number"
-          name="cash"
-          value=""
-          placeholder="Cash"
-        />
-        <input
-          class="border-2 border-solid border-black rounded-xl mx-4"
-          type="number"
-          name="credit"
-          value=""
-          placeholder="Credit"
-        />
-        <input
-          class="border-2 border-solid border-black rounded-xl mx-4"
-          type="number"
-          name="other"
-          value=""
-          placeholder="Other"
-        />
+
         <a href="/submit_delete">
-          <button type="submit">Delete Data</button>
+          <button class="bg-blue-400 border-2 border-solid border-black px-4 py-1 rounded-xl" type="submit">Delete Data</button>
         </a>
       </form>
     </div>
