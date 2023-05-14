@@ -11,8 +11,14 @@ app.config['UPLOADED_PHOTO_DEST'] = 'uploads'
 
 photos = UploadSet('photos', IMAGES)
 
+app.config['SECRET_KEY'] = 'asldfkjlj'
+app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
 
-@app.route('/')
+photos = UploadSet('photos')
+
+
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
 
