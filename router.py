@@ -9,10 +9,8 @@ import requests
 from base64 import b64encode
 from IPython.display import Image
 from matplotlib.pylab import rcParams
-from google.cloud import vision
 import matplotlib.pyplot as plt
 from postgres_rest_api import Postgres as db
-
 
 
 app = Flask(__name__)
@@ -23,6 +21,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 rcParams['figure.figsize'] = 10, 20
+
 
 def make_image_data(imgpath):
     img_req = None
@@ -48,6 +47,7 @@ def request_ocr(url, api_key, imgpath):
                              headers={'Content-Type': 'application/json'})
     return response
 
+
 with open('vision_api.json') as f:
     data = json.load(f)
 
@@ -70,6 +70,7 @@ else:
 
 result
 
+
 def extract_words_with_numbers(result):
     words_with_numbers = []
     for index in range(1, len(result)):
@@ -80,7 +81,9 @@ def extract_words_with_numbers(result):
                 words_with_numbers.append((prev_word, float(description)))
     return words_with_numbers
 
+
 found_words_with_numbers = extract_words_with_numbers(result)
+
 
 def gen_cord(result):
     cord_df = pd.DataFrame(result['boundingPoly']['vertices'])
@@ -96,6 +99,7 @@ plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 print("Text Detected = {}".format(text))
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -122,9 +126,8 @@ def upload_image():
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        db.Add_Data('7/20/2023', text,text, text)
+        db.Add_Data('7/20/2023', text, text, text)
         print(file_path)
-
 
         return render_template('index.html', filename=filename)
 
