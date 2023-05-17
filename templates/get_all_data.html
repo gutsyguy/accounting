@@ -4,22 +4,37 @@
 <body>
   <div>
     <div class="flex justify-center">
-      <div class="mt-10 text-center">
+      <div class="mt-24 text-center">
         <h1 class="text-5xl">Accounting App</h1>
-        <div class="flex justify-center my-24">
-          <div class="w-56">
-            {{form.photo(class="form-control")}}
-          </div>
-          <div class="ml-4">
-            {{form.submit(class="bg-green-500 text-white py-2 px-4 rounded")}}
-          </div>
-        </div>
-        </form>
-        {% if file_url %}
-        <div class="mt-5">
-          <img src="{{ file_url }}" style="width: 400px" />
-        </div>
-        {% endif %}
+        <div class="row">
+          <h2>Select a file to upload</h2>
+          <p>
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  <ul>
+                  {% for message in messages %}
+                    <li>{{ message }}</li>
+                  {% endfor %}
+                  </ul>
+                {% endif %}
+              {% endwith %}
+          </p>
+          {% if filename %}
+              <div>
+                  <img src="{{ url_for('display_image', filename=filename) }}">
+              </div>
+          {% endif %}
+          <form method="post" action="/" enctype="multipart/form-data">
+              <dl>
+                  <p>
+                      <input type="file" name="file" class="form-control" autocomplete="off" required>
+                  </p>
+              </dl>
+              <p>
+                  <input type="submit" value="Submit" class="btn btn-info">
+              </p>
+          </form>
+      </div>
       </div>
     </div>
   </div>
@@ -64,10 +79,10 @@
       <div class="mb-4">        
         <tr>
           <td> <b class="ml-10">Date:</b>  {{ row[0] }}</td>
-          <td> <b class="ml-10">Cash:</b>  {{ row[1] }}</td>
-          <td> <b class="ml-10">Credit:</b>  {{ row[2] }}</td>
-          <td> <b class="ml-10">Other:</b>  {{ row[3] }}</td>
-          <td> <b class="ml-10">Total:</b>  {{ row[4] }}</td>
+          <td> <b class="ml-10">Cash:</b>  ${{ row[1] }}</td>
+          <td> <b class="ml-10">Credit:</b>  ${{ row[2] }}</td>
+          <td> <b class="ml-10">Other:</b>  ${{ row[3] }}</td>
+          <td> <b class="ml-10">Total:</b>  ${{ row[4] }}</td>
         </tr>
       </div>
       {% endfor %}

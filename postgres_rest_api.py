@@ -56,7 +56,7 @@ class Postgres:
             print("One or more arguments is None")
 
     def Update_Data(updated_date, update_cash, update_credit, update_other):
-        update_total = update_cash + update_credit + update_other
+        update_total = float(update_cash) + float(update_credit) + float(update_other)
         try:
             update_script = """
                 UPDATE data SET cash = %s, credit = %s, other = %s, total = %s
@@ -64,7 +64,7 @@ class Postgres:
             """
             Postgres.cur.execute(
                 update_script,
-                (update_cash, update_credit, update_other,
+                (float(update_cash), float(update_credit), float(update_other),
                  update_total, updated_date))
             Postgres.conn.commit()
 
@@ -110,17 +110,9 @@ class Postgres:
             '''
             Postgres.cur.execute(select_all_script)
             rows = Postgres.cur.fetchall()
-
-            for row in rows:
-                print('date:', row[0])
-                print('cash:', row[1])
-                print('credit:', row[2])
-                print('other:', row[3])
-                print('total:', row[4])
-                print("______________________________________________________")
-
             print(rows)
             return rows
+            
 
         except Exception as error:
             print(error)

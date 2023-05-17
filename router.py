@@ -1,59 +1,77 @@
+from flask import Flask, render_template, request, flash, redirect, url_for
+from werkzeug.utils import secure_filename
+import os
+import cv2
+import numpy as np
+import pytesseract
+from google.cloud import vision
+from recognition import Handwriting_Recognizer
 from postgres_rest_api import Postgres as db
-from flask import Flask, render_template, request, send_from_directory, url_for
-from flask_uploads import UploadSet, IMAGES, configure_uploads
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import SubmitField
-
-
 app = Flask(__name__)
-app.config["SECRET_KEY"] = 'asldfkjlj'
-app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
+UPLOAD_FOLDER = 'uploads/'
+app.secret_key = "secret key"
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 
-photos = UploadSet('photos', IMAGES)
-configure_uploads(app, photos)
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-class UploadForm(FlaskForm):
-    photo = FileField(
-        validators=[
-            FileAllowed(photos, 'images only'),
-            FileRequired('Field should not be empty')
-        ]
-    )
-    submit = SubmitField('Upload')
-
-
-@app.route('/', methods=["GET", "POST"])
+@app.route('/', methods=["GET"])
 def index():
-    form = UploadForm()
-    if form.validate_on_submit():
-        filename = photos.save(form.photo.data)
-        file_url = url_for('get_file', filename=filename)
+    return render_template('index.html')
+
+
+@app.route('/', methods=["POST"])
+def upload_image():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+
+    file = request.files['file']
+
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        print(file_path)
+
+        Handwriting_Recognizer
+
+        return render_template('index.html', filename=filename)
+
     else:
-        file_url = None
-    return render_template('index.html', form=form, file_url=file_url)
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
 
 
-@app.route('/upload/<filename>')
-def get_file(filename):
-    return send_from_directory(app.config["UPLOADED_PHOTO_DEST"], filename)
+@app.route('/display/<filename>')
+def display_image(filename):
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
 
 
-@app.route('/update')
+@app.route('/update', methods=['GET', "POST"])
 def update():
-    form = UploadForm()
-    if form.validate_on_submit():
-        filename = photos.save(form.photo.data)
-        file_url = url_for('get_file', filename=filename)
+    if request.method == "POST":
+        date = request.form.get('date')
+        cash = request.form.get('cash')
+        credit = request.form.get('credit')
+        other = request.form.get('other')
+        db.Update_Data(date, cash, credit, other)
+        print("success")
     else:
-        file_url = None
-        db.Update_Data('5/7/2023', 400, 200, 200)
-    return render_template('update_data.html', form=form, file_url=file_url)
+        print('fails')
+    return render_template('update_data.html')
 
 
-@app.route('/add')
+@app.route('/add', methods=["GET", "POST"])
 def add():
     # Sends client informtion to the server
     date = request.form.get('date')
@@ -61,69 +79,30 @@ def add():
     credit = request.form.get('credit')
     other = request.form.get('other')
     db.Add_Data(date, cash, credit, other)
-
-    # Upload file
-    form = UploadForm()
-    if form.validate_on_submit():
-        filename = photos.save(form.photo.data)
-        file_url = url_for('get_file', filename=filename)
-    else:
-        file_url = None
-    return render_template('add_data.html', form=form, file_url=file_url)
-
-
-@app.route('/submit_add', methods=["POST"])
-def submit_add():
-    date = request.form.get('date')
-    cash = request.form.get('cash')
-    credit = request.form.get('credit')
-    other = request.form.get('other')
-    print(date, cash, credit, other)
-    db.Add_Data(date, cash, credit, other)
     return render_template('add_data.html')
 
 
-@app.route('/delete')
+@app.route('/delete', methods=['GET', 'POST'])
 def delete():
-    date = request.form.get('date')
-    db.Delete_Data(date)
-    # Upload file
+    date = None
+    if request.method == 'POST':
+        date = request.form.get('date')
+        db.Delete_Data(date)
 
-    form = UploadForm()
-    if form.validate_on_submit():
-        filename = photos.save(form.photo.data)
-        file_url = url_for('get_file', filename=filename)
-    else:
-        file_url = None
-    return render_template('delete_data.html', form=form, file_url=file_url)
+    return render_template('delete_data.html', date=date)
 
 
 @app.route('/getAll', methods=["GET"])
 def get_All():
     data = db.Get_All_Data()
-    form = UploadForm()
-    if form.validate_on_submit():
-        filename = photos.save(form.photo.data)
-        file_url = url_for('get_file', filename=filename)
-    else:
-        file_url = None
-    return render_template('get_all_data.html', form=form, data=data, file_url=file_url, rows=data)
+    return render_template('get_all_data.html', rows=data)
 
 
-@app.route('/getOne', methods=["GET"])
+@app.route('/getOne', methods=["GET", "POST"])
 def get_One():
-    date = request.form.get('date')
-    data = db.Get_Data(date)
-    if data == None:
-        return print("L")
-
-    form = UploadForm()
-    if form.validate_on_submit():
-        filename = photos.save(form.photo.data)
-        file_url = url_for('get_file', filename=filename)
-    else:
-        file_url = None
-    return render_template('get_data.html', form=form, data=data, file_url=file_url, row=data)
+    date = request.args.get('date')
+    row = db.Get_Data(date)
+    return render_template('get_data.html', row=row)
 
 
 if __name__ == '__main__':
