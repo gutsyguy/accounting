@@ -9,25 +9,13 @@ import requests
 import time
 from base64 import b64encode
 from IPython.display import Image
-from matplotlib.pyplot import rcParams
-
-
+from matplotlib.pylab import rcParams
 
 
 rcParams['figure.figsize'] = 10, 20
 
-with open('vision_api.json') as f:
-    data = json.load(f)
 
-ENDPOINT_URL = 'https://vision.googleapis.com/v1/images:annotate'
-api_key = data["api_key"]
-    
-image_loc = None
-def __init__(self, image_location):
-    self.image_loc = image_location
-        
-
-def makeImageData(imgpath):
+def make_image_data(imgpath):
     img_req = None
     with open(imgpath, 'rb') as f:
         ctxt = b64encode(f.read()).decode()
@@ -43,31 +31,51 @@ def makeImageData(imgpath):
     return json.dumps({"requests": img_req}).encode()
 
 
-def requestOCR(url, api_key, imgpath):
-    imgdata = handwriting_recognition.makeImageData(imgpath)
-    response = requests.post(ENDPOINT_URL,
-                            data=imgdata,
-                            params={'key': api_key},
-                            headers={'Content-Type': 'application/json'})
+def request_ocr(url, api_key, imgpath):
+    imgdata = make_image_data(imgpath)
+    response = requests.post(url,
+                             data=imgdata,
+                             params={'key': api_key},
+                             headers={'Content-Type': 'application/json'})
     return response
+
+
+with open('vision_api.json') as f:
+    data = json.load(f)
+
+
+ENDPOINT_URL = 'https://vision.googleapis.com/v1/images:annotate'
+api_key = data["api_key"]
+img_loc = "uploads/4.jpg"
+
 
 Image(img_loc)
 
 
-result = requestOCR(ENDPOINT_URL, api_key, img_loc)
+result = request_ocr(ENDPOINT_URL, api_key, img_loc)
 
 
 if result.status_code != 200 or result.json().get('error'):
     print("Error")
 else:
-        result = result.json()['responses'][0]['textAnnotations']
+    result = result.json()['responses'][0]['textAnnotations']
 
 
 result
 
 
-for index in range(len(result)):
-    print(result[index]["description"])
+def extract_words_with_numbers(result):
+    words_with_numbers = []
+    for index in range(1, len(result)):
+        description = result[index]["description"]
+        prev_word = result[index - 1]["description"]
+        if prev_word.lower() in ["cash", "credit", "debit"]:
+            if description.isdigit():
+                words_with_numbers.append((prev_word, float(description)))
+    return words_with_numbers
+
+
+found_words_with_numbers = extract_words_with_numbers(result)
 
 
 def gen_cord(result):

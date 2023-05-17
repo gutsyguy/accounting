@@ -1,3 +1,14 @@
-{
-    "api_key": "AIzaSyB1t9RWr68IaX3RWfwL4TTo0QEwLG0uiQ4"
+  {
+    "type": "service_account",
+    "project_id": "newagent-9739c",
+    "private_key_id": "3a65419e91431a145f0ac57d112a8f74ca5eece2",
+    "api_key": "AIzaSyB1t9RWr68IaX3RWfwL4TTo0QEwLG0uiQ4",
+    "private_key": "your-private-key",
+    "client_email": "gutsyboi123@gmail.com",
+    "client_id": "your-client-id",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://accounts.google.com/o/oauth2/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "your-client-x509-cert-url"
   }
+  
