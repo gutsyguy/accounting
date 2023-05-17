@@ -13,34 +13,49 @@
       <div class="flex justify-center">
         <div class="mt-24 text-center">
           <h1 class="text-5xl">Accounting App</h1>
-          <div class="row">
-            <h2>Select a file to upload</h2>
-            <p>
+          <div class="my-24">
+            <h2 class="mb-12">Select a file to upload</h2>
+            <div class="my-10">
+              <p>
                 {% with messages = get_flashed_messages() %}
-                  {% if messages %}
-                    <ul>
-                    {% for message in messages %}
-                      <li>{{ message }}</li>
-                    {% endfor %}
-                    </ul>
-                  {% endif %}
-                {% endwith %}
-            </p>
-            {% if filename %}
-                <div>
-                    <img src="{{ url_for('display_image', filename=filename) }}">
-                </div>
-            {% endif %}
-            <form method="post" action="/" enctype="multipart/form-data">
+                {% if messages %}
+              <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              {% endwith %}
+              </p>
+              {% if filename %}
+              <div>
+                <img src="{{ url_for('display_image', filename=filename) }}">
+              </div>
+              {% endif %}
+  
+  
+              {% if found_words %}
+              <h3>Found Words:</h3>
+              <ul>
+                {% for word in found_words %}
+                <li>{{ word }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <form method="post" action="/" enctype="multipart/form-data">
                 <dl>
-                    <p>
-                        <input type="file" name="file" class="form-control" autocomplete="off" required>
-                    </p>
+                  <p>
+                    <input type="file" name="file" class="form-control" autocomplete="off" required>
+                  </p>
                 </dl>
                 <p>
-                    <input type="submit" value="Submit" class="btn btn-info">
+                  <input class="mt-10 bg-blue-400 border-2 border-solid border-black px-4 py-1 rounded-xl" type="submit"
+                    value="Submit" class="btn btn-info">
                 </p>
+            </div>
+  
             </form>
+          </div>
         </div>
         </div>
       </div>

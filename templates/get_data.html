@@ -6,87 +6,83 @@
     <div class="flex justify-center">
       <div class="mt-24 text-center">
         <h1 class="text-5xl">Accounting App</h1>
-        <div class="row">
-          <h2>Select a file to upload</h2>
-          <p>
+        <div class="my-24">
+          <h2 class="mb-12">Select a file to upload</h2>
+          <div class="my-10">
+            <p>
               {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                  <ul>
-                  {% for message in messages %}
-                    <li>{{ message }}</li>
-                  {% endfor %}
-                  </ul>
-                {% endif %}
-              {% endwith %}
-          </p>
-          {% if filename %}
-              <div>
-                  <img src="{{ url_for('display_image', filename=filename) }}">
-              </div>
-          {% endif %}
-          <form method="post" action="/" enctype="multipart/form-data">
+              {% if messages %}
+            <ul>
+              {% for message in messages %}
+              <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            </p>
+            {% if filename %}
+            <div>
+              <img src="{{ url_for('display_image', filename=filename) }}">
+            </div>
+            {% endif %}
+
+
+            {% if found_words %}
+            <h3>Found Words:</h3>
+            <ul>
+              {% for word in found_words %}
+              <li>{{ word }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            <form method="post" action="/" enctype="multipart/form-data">
               <dl>
-                  <p>
-                      <input type="file" name="file" class="form-control" autocomplete="off" required>
-                  </p>
+                <p>
+                  <input type="file" name="file" class="form-control" autocomplete="off" required>
+                </p>
               </dl>
               <p>
-                  <input type="submit" value="Submit" class="btn btn-info">
+                <input class="mt-10 bg-blue-400 border-2 border-solid border-black px-4 py-1 rounded-xl" type="submit"
+                  value="Submit" class="btn btn-info">
               </p>
+          </div>
+
           </form>
+        </div>
       </div>
       </div>
     </div>
     <div class="flex justify-center">
       <a href="/add">
-        <button
-          type="button"
-          class="mx-8 py-3 px-7 border-2 border-black border-solid rounded-xl"
-        >
+        <button type="button" class="mx-8 py-3 px-7 border-2 border-black border-solid rounded-xl">
           add
         </button>
       </a>
-      <a
-        href="/delete"
-        onclick="renderer('delete')"
-        class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
-      >
+      <a href="/delete" onclick="renderer('delete')"
+        class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl">
         <button type="button">delete</button>
       </a>
-      <a
-        href="/getAll"
-        onclick="renderer('getAll')"
-        class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
-      >
+      <a href="/getAll" onclick="renderer('getAll')"
+        class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl">
         <button type="button">getAll</button>
       </a>
-      <a
-        href="/getOne"
-        onclick="renderer('getOne')"
-        class="mx-8 py-3 px-4 border-2 border-black border-solid rounded-xl"
-      >
+      <a href="/getOne" onclick="renderer('getOne')"
+        class="mx-8 py-3 px-4 border-2 border-black border-solid rounded-xl">
         <button type="button">getOne</button>
       </a>
-      <a
-        href="/update"
-        onclick="renderer('update')"
-        class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl"
-      >
+      <a href="/update" onclick="renderer('update')"
+        class="mx-8 py-3 px-5 border-2 border-black border-solid rounded-xl">
         <button type="button">update</button>
       </a>
     </div>
 
     <div class="flex justify-center mt-10">
       <form action="{{ url_for('get_One') }}">
-        <input
-          class="border-2 border-solid border-black rounded-xl mx-4"
-          type="text"
-          name="date"
-          value=""
-          placeholder="Date"
-        />
+        <input class="border-2 border-solid border-black rounded-xl mx-4" type="text" name="date" value=""
+          placeholder="Date" />
         <a href="/getOne">
-          <button class="bg-blue-400 border-2 border-solid border-black px-4 py-1 rounded-xl" type="submit">Get Data</button>
+          <button class="bg-blue-400 border-2 border-solid border-black px-4 py-1 rounded-xl" type="submit">Get
+            Data</button>
         </a>
       </form>
     </div>
@@ -97,13 +93,13 @@
     </thead>
     <tbody>
       {% if row %}
-        <tr>
-          <td> <b class="ml-10">Date:</b>  {{ row[0] }}</td>
-          <td> <b class="ml-10">Cash:</b>  ${{ row[1] }}</td>
-          <td> <b class="ml-10">Credit:</b>  ${{ row[2] }}</td>
-          <td> <b class="ml-10">Other:</b>  ${{ row[3] }}</td>
-          <td> <b class="ml-10">Total:</b>  ${{ row[4] }}</td>
-        </tr>
+      <tr>
+        <td> <b class="ml-10">Date:</b> {{ row[0] }}</td>
+        <td> <b class="ml-10">Cash:</b> ${{ row[1] }}</td>
+        <td> <b class="ml-10">Credit:</b> ${{ row[2] }}</td>
+        <td> <b class="ml-10">Other:</b> ${{ row[3] }}</td>
+        <td> <b class="ml-10">Total:</b> ${{ row[4] }}</td>
+      </tr>
       {% endif %}
     </tbody>
   </table>
